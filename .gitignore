@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+*.egg-info/
+
+# Env
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# DB
+*.sqlite3
+
+# Migrations (optionnel, certains les committent)
+# migrations/
