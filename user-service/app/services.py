@@ -13,7 +13,7 @@ def create_user(data):
     user = User(
         first_name=data['first_name'],
         last_name=data['last_name'],
-        date_of_birth=data['birth_date'],
+        birth_date=data['birth_date'],
     )
     db.session.add(user)
     db.session.commit()
