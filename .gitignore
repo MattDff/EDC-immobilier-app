@@ -17,3 +17,5 @@ venv/
 
 # Migrations (optionnel, certains les committent)
 # migrations/
+
+.env
