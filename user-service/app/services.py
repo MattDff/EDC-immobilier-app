@@ -1,6 +1,7 @@
 from app import db
 from app.models import User
 from sqlalchemy.sql.functions import user
+from datetime import datetime
 
 
 def get_all_users():
@@ -10,10 +11,14 @@ def get_user_by_id(user_id):
     return User.query.get(user_id)
 
 def create_user(data):
+    birth_date = None
+    if data.get("birth_date"):
+        birth_date = datetime.strptime(data["birth_date"], "%Y-%m-%d").date()
+
     user = User(
         first_name=data['first_name'],
         last_name=data['last_name'],
-        birth_date=data['birth_date'],
+        birth_date=birth_date,
     )
     db.session.add(user)
     db.session.commit()
