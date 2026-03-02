@@ -19,7 +19,7 @@ def create_user(data):
     db.session.commit()
     return user
 
-def update_user(data):
+def update_user(user, data):
     user.first_name = data.get("firt_name", user.first_name)
     user.last_name = data.get("last_name", user.last_name)
     user.birth_date = data.get("birth_date", user.birth_date)
