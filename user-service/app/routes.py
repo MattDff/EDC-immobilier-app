@@ -6,7 +6,7 @@ bp = Blueprint("users", __name__)
 
 @bp.route("/")
 def home():
-    return jsonify({"message": "L'API est en cours d'execution"}), 200
+    return jsonify({"message": "User service est en cours d'execution"}), 200
 
 @bp.route("/users", methods=["GET"])
 def get_users():

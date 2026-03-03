@@ -40,8 +40,8 @@ def delete_property(property):
 
 ############# CRUD for Room ################
 
-def get_all_rooms():
-    return Room.query.all()
+def get_rooms_by_property(property_id):
+    return Room.query.filter_by(property_id=property_id).all()
 
 def get_room_by_id(room_id):
     return Room.query.get(room_id)
