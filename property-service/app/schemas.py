@@ -8,7 +8,7 @@ class RoomSchema(SQLAlchemyAutoSchema):
         load_instance = True
 
 class PropertySchema(SQLAlchemyAutoSchema):
-    rooms = fields.List(fields.Nested(RoomSchema))
+    rooms = fields.List(fields.Nested(RoomSchema), dump_only=True)
     class Meta:
         model = Property
         load_instance = True
