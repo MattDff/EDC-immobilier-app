@@ -15,11 +15,11 @@ def get_properties_by_city(city):
 def create_property(data):
     property = Property(
         name=data["name"],
-        description=data["description"],
+        description=data.get("description"),
         type=data["type"],
         city=data["city"],
         owner_id=data["owner_id"],
-        rooms=data["rooms"],
+        rooms=data.get("rooms"),
     )
     db.session.add(property)
     db.session.commit()
@@ -50,8 +50,8 @@ def create_room(data):
     room = Room(
         property_id=data["property_id"],
         name=data["name"],
-        area_sqm=data["area_sqm"],
-        description=data["description"],
+        area_sqm=data.get("area_sqm"),
+        description=data.get("description"),
     )
     db.session.add(room)
     db.session.commit()
