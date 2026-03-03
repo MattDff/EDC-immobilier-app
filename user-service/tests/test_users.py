@@ -41,3 +41,22 @@ def test_create_user_missing_fields(client):
 def test_get_user_not_found(client):
     response = client.get("/api/v1/users/uuid-inexistant")
     assert response.status_code == 404
+
+def test_update_user(client):
+    create_response = client.post("/api/v1/users", json={
+        "first_name": "Jean",
+        "last_name": "Dupont"
+    })
+    user_id = create_response.get_json()["id"]
+    response = client.put(f"/api/v1/users/{user_id}", json={"first_name": "Pierre"})
+    assert response.status_code == 200
+    assert response.get_json()["first_name"] == "Pierre"
+
+def test_delete_user(client):
+    create_response = client.post("/api/v1/users", json={
+        "first_name": "Jean",
+        "last_name": "Dupont"
+    })
+    user_id = create_response.get_json()["id"]
+    response = client.delete(f"/api/v1/users/{user_id}")
+    assert response.status_code == 200

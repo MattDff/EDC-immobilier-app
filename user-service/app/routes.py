@@ -13,7 +13,7 @@ def get_users():
     users = get_all_users()
     return jsonify(users_schema.dump(users)), 200
 
-@bp.route("/users/<int:user_id>", methods=["GET"])
+@bp.route("/users/<string:user_id>", methods=["GET"])
 def get_user(user_id):
     user = get_user_by_id(user_id)
     if not user:
@@ -28,7 +28,7 @@ def create_user_route():
     user = create_user(data)
     return jsonify(user_schema.dump(user)), 201
 
-@bp.route("/users/<int:user_id>", methods=["PUT"])
+@bp.route("/users/<string:user_id>", methods=["PUT"])
 def update_user_route(user_id):
     user = get_user_by_id(user_id)
     if not user:
@@ -37,7 +37,7 @@ def update_user_route(user_id):
     user = update_user(user, data)
     return jsonify(user_schema.dump(user)), 200
 
-@bp.route("/users/<int:user_id>", methods=["DELETE"])
+@bp.route("/users/<string:user_id>", methods=["DELETE"])
 def delete_user_route(user_id):
     user = get_user_by_id(user_id)
     if not user:
