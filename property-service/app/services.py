@@ -45,9 +45,9 @@ def get_rooms_by_property(property_id):
 def get_room_by_id(room_id):
     return Room.query.get(room_id)
 
-def create_room(data):
+def create_room(data, property_id):
     room = Room(
-        property_id=data["property_id"],
+        property_id=property_id,
         name=data["name"],
         area_sqm=data.get("area_sqm"),
         description=data.get("description"),
