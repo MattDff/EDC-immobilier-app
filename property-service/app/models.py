@@ -2,11 +2,6 @@ import enum
 import uuid
 from app import db
 
-class PropertyType(enum.Enum):
-    apartment = "apartment"
-    house = "house"
-    studio = "studio"
-    other = "other"
 
 class Property(db.Model):
     __tablename__ = "properties"
@@ -14,7 +9,7 @@ class Property(db.Model):
     id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
-    type = db.Column(db.Enum(PropertyType), nullable=False)
+    type = db.Column(db.String(50), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     owner_id = db.Column(db.String(36), nullable=False)
     rooms = db.relationship("Room", backref="property", lazy=True)

@@ -1,5 +1,5 @@
 from app import db
-from app.models import Property, Room, PropertyType
+from app.models import Property, Room
 
 ############# CRUD for Property ################
 
