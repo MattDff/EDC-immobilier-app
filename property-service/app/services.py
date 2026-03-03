@@ -7,7 +7,7 @@ def get_all_properties():
     return Property.query.all()
 
 def get_property_by_id(property_id):
-    return Property.query.get(property_id)
+    return Property.query.filter_by(id=property_id).first()
 
 def get_properties_by_city(city):
     return Property.query.filter_by(city=city).all()
@@ -43,7 +43,7 @@ def get_rooms_by_property(property_id):
     return Room.query.filter_by(property_id=property_id).all()
 
 def get_room_by_id(room_id):
-    return Room.query.get(room_id)
+    return Room.query.filter_by(id=room_id).first()
 
 def create_room(data, property_id):
     room = Room(
