@@ -19,7 +19,6 @@ def create_property(data):
         type=data["type"],
         city=data["city"],
         owner_id=data["owner_id"],
-        rooms=data.get("rooms"),
     )
     db.session.add(property)
     db.session.commit()
