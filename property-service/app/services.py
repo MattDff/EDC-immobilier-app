@@ -63,6 +63,6 @@ def update_room(room, data):
     db.session.commit()
     return room
 
-def delete_room(room_id):
-    db.session.delete(room_id)
+def delete_room(room):
+    db.session.delete(room)
     db.session.commit()
