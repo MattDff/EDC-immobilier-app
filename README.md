@@ -7,6 +7,8 @@ Application de gestion immobilière composée de deux microservices REST en Pyth
 - **user-service** (port 5001) : gestion des utilisateurs
 - **property-service** (port 5002) : gestion des biens immobiliers et des pièces
 
+Les deux services communiquent entre eux via HTTP, le property-service appelle le user-service pour vérifier qu'un propriétaire existe avant de créer un bien.
+
 ## Prérequis
 
 - Python 3.12+ (testé seulement sur python 3.12.2)
@@ -62,6 +64,7 @@ Créer un fichier `.env` dans `property-service/` contenant :
 DATABASE_URL=postgresql://votre-username:votre-password@localhost/properties_db
 FLASK_APP=run.py
 PORT=5002
+USER_SERVICE_URL=http://localhost:5001
 ```
 
 ### 5. Initialiser les bases de données
@@ -144,29 +147,40 @@ curl -X POST http://localhost:5001/api/v1/users \
 | GET | `/properties?city=Paris` | Filtrer les biens par ville |
 | GET | `/properties/<id>` | Détail d'un bien (avec ses pièces) |
 | POST | `/properties` | Créer un bien |
-| PUT | `/properties/<id>` | Modifier un bien |
-| DELETE | `/properties/<id>` | Supprimer un bien |
+| PUT | `/properties/<id>` | Modifier un bien ⚠️ |
+| DELETE | `/properties/<id>` | Supprimer un bien ⚠️ |
 | GET | `/properties/<id>/rooms` | Liste les pièces d'un bien |
 | GET | `/properties/<id>/rooms/<room_id>` | Détail d'une pièce |
 | POST | `/properties/<id>/rooms` | Ajouter une pièce |
-| PUT | `/properties/<id>/rooms/<room_id>` | Modifier une pièce |
-| DELETE | `/properties/<id>/rooms/<room_id>` | Supprimer une pièce |
+| PUT | `/properties/<id>/rooms/<room_id>` | Modifier une pièce ⚠️ |
+| DELETE | `/properties/<id>/rooms/<room_id>` | Supprimer une pièce ⚠️ |
+
+> ⚠️ Ces routes nécessitent le header `X-User-Id` car seul le propriétaire du bien peut modifier ou supprimer.
+
 
 **Exemple 1, Créer un bien :**
 ```bash
 curl -X POST http://localhost:5002/api/v1/properties \
   -H "Content-Type: application/json" \
-  -d '{"name": "Bel Appart", "type": "apartment", "city": "Paris", "owner_id": "<user_id>"}'
+  -d '{"name": "Bel Appart", "type": "apartment", "city": "Paris", "owner_id": ""}'
 ```
 
-**Exemple 2, Ajouter une pièce :**
+**Exemple 2, Modifier un bien (propriétaire uniquement) :**
 ```bash
-curl -X POST http://localhost:5002/api/v1/properties/<property_id>/rooms \
+curl -X PUT http://localhost:5002/api/v1/properties/ \
+  -H "Content-Type: application/json" \
+  -H "X-User-Id: " \
+  -d '{"name": "Nouveau Nom"}'
+```
+
+**Exemple 3, Ajouter une pièce :**
+```bash
+curl -X POST http://localhost:5002/api/v1/properties//rooms \
   -H "Content-Type: application/json" \
   -d '{"name": "Salon", "area_sqm": 25.0, "description": "Grand salon lumineux"}'
 ```
 
-**Exemple 3, Filtrer par ville :**
+**Exemple 4, Filtrer par ville :**
 ```bash
 curl http://localhost:5002/api/v1/properties?city=Paris
 ```
