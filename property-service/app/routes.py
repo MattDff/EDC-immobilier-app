@@ -39,6 +39,9 @@ def update_property_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
         return jsonify({"error": "Propriété non trouvée"}), 404
+    user_id = request.headers.get("X-User-Id")
+    if not user_id or user_id != property.owner_id:
+        return jsonify({"error": "Vous pouvez seulement modifier les propriétés dont vous êtes le propriétaire"}), 403
     data = request.get_json()
     property = update_property(property, data)
     return jsonify(property_schema.dump(property)), 200
@@ -48,6 +51,9 @@ def delete_property_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
         return jsonify({"error": "Propriété non trouvée"}), 404
+    user_id = request.headers.get("X-User-Id")
+    if not user_id or user_id != property.owner_id:
+        return jsonify({"error": "Vous pouvez seulement supprimer les propriétés dont vous êtes le propriétaire"}), 403
     delete_property(property)
     return jsonify({"message": "Propriété supprimée"}), 200
 
@@ -84,6 +90,10 @@ def update_room_route(property_id, room_id):
     room = get_room_by_id(room_id)
     if not room:
         return jsonify({"error": "Pièce non trouvée"}), 404
+    user_id = request.headers.get("X-User-Id")
+    property = get_property_by_id(property_id)
+    if not user_id or user_id != property.owner_id:
+        return jsonify({"error": "Vous pouvez seulement modifier les propriétés dont vous êtes le propriétaire"}), 403
     data = request.get_json()
     room = update_room(room, data)
     return jsonify(room_schema.dump(room)), 200
@@ -93,5 +103,9 @@ def delete_room_route(property_id, room_id):
     room = get_room_by_id(room_id)
     if not room:
         return jsonify({"error": "Pièce non trouvée"}), 404
+    user_id = request.headers.get("X-User-Id")
+    property = get_property_by_id(property_id)
+    if not user_id or user_id != property.owner_id:
+        return jsonify({"error": "Vous pouvez seulement modifier les propriétés dont vous êtes le propriétaire"}), 403
     delete_room(room)
     return jsonify({"message": "Pièce supprimée"}), 200
