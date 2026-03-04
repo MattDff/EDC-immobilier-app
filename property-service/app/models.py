@@ -1,4 +1,3 @@
-import enum
 import uuid
 from app import db
 
