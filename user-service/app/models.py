@@ -9,5 +9,6 @@ class User(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     birth_date = db.Column(db.Date, nullable=True)
 
+    # Fonction pour afficher lisiblement dans le terminal quand on debug
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name}>"

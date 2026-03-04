@@ -10,6 +10,11 @@ def get_user_by_id(user_id):
     return User.query.filter_by(id=user_id).first()
 
 def create_user(data):
+    # La date est reçue en string "YYYY-MM-DD" depuis le JSON.
+    # On la convertit en objet Python date() car SQLite (utilisé dans les tests)
+    # n'accepte pas les strings pour les colonnes de type Date.
+    # PostgreSQL est plus permissif, mais cette conversion garantit
+    # la compatibilité avec les deux bases.
     birth_date = None
     if data.get("birth_date"):
         birth_date = datetime.strptime(data["birth_date"], "%Y-%m-%d").date()

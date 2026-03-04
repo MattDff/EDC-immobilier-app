@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 import sys
 import os
 
+# Permet à Python de trouver config.py depuis le dossier du service
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 db = SQLAlchemy()
@@ -15,6 +16,7 @@ def create_app(test_config=None):
     from config import Config
     app.config.from_object(Config)
 
+    # Si une config de test est fournie, elle écrase la config par défaut
     if test_config:
         app.config.update(test_config)
 
