@@ -59,7 +59,6 @@ def test_get_properties_by_city(client):
     assert data[0]["city"] == "Paris"
 
 def test_create_room(client):
-    # D'abord créer un bien
     property_response = client.post("/api/v1/properties", json={
         "name": "Bel Appart",
         "type": "apartment",
@@ -68,7 +67,6 @@ def test_create_room(client):
     })
     property_id = property_response.get_json()["id"]
 
-    # Puis créer une pièce
     response = client.post(f"/api/v1/properties/{property_id}/rooms", json={
         "name": "Salon",
         "area_sqm": 25.0

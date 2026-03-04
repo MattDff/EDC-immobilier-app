@@ -13,6 +13,7 @@ class Property(db.Model):
     owner_id = db.Column(db.String(36), nullable=False)
     rooms = db.relationship("Room", backref="property", lazy=True)
 
+    # Fonction pour afficher lisiblement dans le terminal quand on debug
     def __repr__(self):
         return f"<Property {self.name} {self.city}>"
 
@@ -26,5 +27,6 @@ class Room(db.Model):
     area_sqm = db.Column(db.Float, nullable=True)
     description = db.Column(db.Text, nullable=True)
 
+    # Fonction pour afficher lisiblement dans le terminal quand on debug
     def __repr__(self):
         return f"<Room {self.name}>"

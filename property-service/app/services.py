@@ -1,7 +1,8 @@
 from app import db
 from app.models import Property, Room
 
-############# CRUD for Property ################
+
+############# CRUD pour les biens immobiliers ################
 
 def get_all_properties():
     return Property.query.all()
@@ -37,7 +38,7 @@ def delete_property(property):
     db.session.delete(property)
     db.session.commit()
 
-############# CRUD for Room ################
+############# CRUD pour les pièces ################
 
 def get_rooms_by_property(property_id):
     return Room.query.filter_by(property_id=property_id).all()

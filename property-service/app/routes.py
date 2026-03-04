@@ -8,7 +8,7 @@ bp = Blueprint("properties", __name__)
 def home():
     return jsonify({"message": "Property service is running"}), 200
 
-######### Routes for properties #########
+############# Routes pour les biens immobiliers ################
 
 @bp.route("/properties", methods=["GET"])
 def get_properties():
@@ -51,7 +51,7 @@ def delete_property_route(property_id):
     delete_property(property)
     return jsonify({"message": "Propriété supprimée"}), 200
 
-######### Routes for rooms #########
+############# Routes pour les pièces ################
 
 @bp.route("/properties/<string:property_id>/rooms", methods=["GET"])
 def get_rooms_route(property_id):
