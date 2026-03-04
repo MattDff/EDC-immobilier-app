@@ -96,56 +96,73 @@ def test_get_rooms(client):
 
 def test_update_property(client):
     property_response = client.post("/api/v1/properties", json={
-        "name": "Bel Appart",
-        "type": "apartment",
-        "city": "Paris",
-        "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
+        "name": "Bel Appart", "type": "apartment",
+        "city": "Paris", "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
     })
     property_id = property_response.get_json()["id"]
-    response = client.put(f"/api/v1/properties/{property_id}", json={"name": "Nouvel Appart"})
+    response = client.put(f"/api/v1/properties/{property_id}",
+        headers={"X-User-Id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"},
+        json={"name": "Nouvel Appart"})
     assert response.status_code == 200
     assert response.get_json()["name"] == "Nouvel Appart"
 
 def test_delete_property(client):
     property_response = client.post("/api/v1/properties", json={
-        "name": "Bel Appart",
-        "type": "apartment",
-        "city": "Paris",
-        "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
+        "name": "Bel Appart", "type": "apartment",
+        "city": "Paris", "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
     })
     property_id = property_response.get_json()["id"]
-    response = client.delete(f"/api/v1/properties/{property_id}")
+    response = client.delete(f"/api/v1/properties/{property_id}",
+        headers={"X-User-Id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"})
     assert response.status_code == 200
 
 def test_update_room(client):
     property_response = client.post("/api/v1/properties", json={
-        "name": "Bel Appart",
-        "type": "apartment",
-        "city": "Paris",
-        "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
+        "name": "Bel Appart", "type": "apartment",
+        "city": "Paris", "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
     })
     property_id = property_response.get_json()["id"]
     room_response = client.post(f"/api/v1/properties/{property_id}/rooms", json={
-        "name": "Salon",
-        "area_sqm": 25.0
+        "name": "Salon", "area_sqm": 25.0
     })
     room_id = room_response.get_json()["id"]
-    response = client.put(f"/api/v1/properties/{property_id}/rooms/{room_id}", json={"name": "Grande Salle"})
+    response = client.put(f"/api/v1/properties/{property_id}/rooms/{room_id}",
+        headers={"X-User-Id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"},
+        json={"name": "Grande Salle"})
     assert response.status_code == 200
     assert response.get_json()["name"] == "Grande Salle"
 
 def test_delete_room(client):
     property_response = client.post("/api/v1/properties", json={
-        "name": "Bel Appart",
-        "type": "apartment",
-        "city": "Paris",
-        "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
+        "name": "Bel Appart", "type": "apartment",
+        "city": "Paris", "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
     })
     property_id = property_response.get_json()["id"]
     room_response = client.post(f"/api/v1/properties/{property_id}/rooms", json={
-        "name": "Salon",
-        "area_sqm": 25.0
+        "name": "Salon", "area_sqm": 25.0
     })
     room_id = room_response.get_json()["id"]
-    response = client.delete(f"/api/v1/properties/{property_id}/rooms/{room_id}")
+    response = client.delete(f"/api/v1/properties/{property_id}/rooms/{room_id}",
+        headers={"X-User-Id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"})
     assert response.status_code == 200
+
+def test_update_property_wrong_owner(client):
+    property_response = client.post("/api/v1/properties", json={
+        "name": "Bel Appart", "type": "apartment",
+        "city": "Paris", "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
+    })
+    property_id = property_response.get_json()["id"]
+    response = client.put(f"/api/v1/properties/{property_id}",
+        headers={"X-User-Id": "mauvais-id"},
+        json={"name": "Nouveau Nom"})
+    assert response.status_code == 403
+
+def test_update_property_no_header(client):
+    property_response = client.post("/api/v1/properties", json={
+        "name": "Bel Appart", "type": "apartment",
+        "city": "Paris", "owner_id": "6bd019c9-ffe4-44f4-ba14-26ca4717dba4"
+    })
+    property_id = property_response.get_json()["id"]
+    response = client.put(f"/api/v1/properties/{property_id}",
+        json={"name": "Nouveau Nom"})
+    assert response.status_code == 403
