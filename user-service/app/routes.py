@@ -17,7 +17,7 @@ def get_users():
 def get_user(user_id):
     user = get_user_by_id(user_id)
     if not user:
-        return jsonify({"error": "Utilisateur non trouvé"}), 404
+        return jsonify({"error": "Utilisateur non trouve"}), 404
     return jsonify(user_schema.dump(user)), 200
 
 @bp.route("/users", methods=["POST"])
@@ -32,7 +32,7 @@ def create_user_route():
 def update_user_route(user_id):
     user = get_user_by_id(user_id)
     if not user:
-        return jsonify({"error": "Utilisateur non trouvé"}), 404
+        return jsonify({"error": "Utilisateur non trouve"}), 404
     data = request.get_json()
     user = update_user(user, data)
     return jsonify(user_schema.dump(user)), 200
@@ -41,6 +41,6 @@ def update_user_route(user_id):
 def delete_user_route(user_id):
     user = get_user_by_id(user_id)
     if not user:
-        return jsonify({"error": "Utilisateur non trouvé"}), 404
+        return jsonify({"error": "Utilisateur non trouve"}), 404
     delete_user(user)
-    return jsonify({"message": "Utilisateur supprimé"}), 200
+    return jsonify({"message": "Utilisateur supprime"}), 200

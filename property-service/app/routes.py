@@ -23,7 +23,7 @@ def get_properties():
 def get_property_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
-        return jsonify({"error": "Propriété non trouvée"}), 404
+        return jsonify({"error": "Propriete non trouvee"}), 404
     return jsonify(property_schema.dump(property)), 200
 
 @bp.route("/properties", methods=["POST"])
@@ -32,7 +32,7 @@ def create_property_route():
     if not data or not data.get("name") or not data.get("type") or not data.get("city") or not data.get("owner_id"):
         return jsonify({"error": "name, type, city et owner_id sont obligatoires"}), 400
     if not validate_owner(data["owner_id"]):
-        return jsonify({"error": "Propriétaire non trouvé"}), 404
+        return jsonify({"error": "Proprietaire non trouve"}), 404
     property = create_property(data)
     return jsonify(property_schema.dump(property)), 201
 
@@ -40,10 +40,10 @@ def create_property_route():
 def update_property_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
-        return jsonify({"error": "Propriété non trouvée"}), 404
+        return jsonify({"error": "Propriete non trouvee"}), 404
     user_id = request.headers.get("X-User-Id")
     if not user_id or user_id != property.owner_id:
-        return jsonify({"error": "Vous pouvez seulement modifier les propriétés dont vous êtes le propriétaire"}), 403
+        return jsonify({"error": "Vous pouvez seulement modifier les proprietes dont vous etes le proprietaire"}), 403
     data = request.get_json()
     property = update_property(property, data)
     return jsonify(property_schema.dump(property)), 200
@@ -52,12 +52,12 @@ def update_property_route(property_id):
 def delete_property_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
-        return jsonify({"error": "Propriété non trouvée"}), 404
+        return jsonify({"error": "Propriete non trouvee"}), 404
     user_id = request.headers.get("X-User-Id")
     if not user_id or user_id != property.owner_id:
-        return jsonify({"error": "Vous pouvez seulement supprimer les propriétés dont vous êtes le propriétaire"}), 403
+        return jsonify({"error": "Vous pouvez seulement supprimer les proprietes dont vous etes le proprietaire"}), 403
     delete_property(property)
-    return jsonify({"message": "Propriété supprimée"}), 200
+    return jsonify({"message": "Propriete supprimee"}), 200
 
 ############# Routes pour les pièces ################
 
@@ -65,7 +65,7 @@ def delete_property_route(property_id):
 def get_rooms_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
-        return jsonify({"error": "Propriété non trouvée"}), 404
+        return jsonify({"error": "Propriete non trouvee"}), 404
     rooms = get_rooms_by_property(property_id)
     return jsonify(rooms_schema.dump(rooms)), 200
 
@@ -73,14 +73,14 @@ def get_rooms_route(property_id):
 def get_room_route(property_id, room_id):
     room = get_room_by_id(room_id)
     if not room:
-        return jsonify({"error": "Pièce non trouvée"}), 404
+        return jsonify({"error": "Piece non trouvee"}), 404
     return jsonify(room_schema.dump(room)), 200
 
 @bp.route("/properties/<string:property_id>/rooms", methods=["POST"])
 def create_room_route(property_id):
     property = get_property_by_id(property_id)
     if not property:
-        return jsonify({"error": "Propriété non trouvée"}), 404
+        return jsonify({"error": "Propriete non trouvee"}), 404
     data = request.get_json()
     if not data or not data.get("name"):
         return jsonify({"error": "name est obligatoire"}), 400
@@ -91,11 +91,11 @@ def create_room_route(property_id):
 def update_room_route(property_id, room_id):
     room = get_room_by_id(room_id)
     if not room:
-        return jsonify({"error": "Pièce non trouvée"}), 404
+        return jsonify({"error": "Piece non trouvee"}), 404
     user_id = request.headers.get("X-User-Id")
     property = get_property_by_id(property_id)
     if not user_id or user_id != property.owner_id:
-        return jsonify({"error": "Vous pouvez seulement modifier les propriétés dont vous êtes le propriétaire"}), 403
+        return jsonify({"error": "Vous pouvez seulement modifier les proprietes dont vous etes le proprietaire"}), 403
     data = request.get_json()
     room = update_room(room, data)
     return jsonify(room_schema.dump(room)), 200
@@ -104,10 +104,10 @@ def update_room_route(property_id, room_id):
 def delete_room_route(property_id, room_id):
     room = get_room_by_id(room_id)
     if not room:
-        return jsonify({"error": "Pièce non trouvée"}), 404
+        return jsonify({"error": "Piece non trouvee"}), 404
     user_id = request.headers.get("X-User-Id")
     property = get_property_by_id(property_id)
     if not user_id or user_id != property.owner_id:
-        return jsonify({"error": "Vous pouvez seulement modifier les propriétés dont vous êtes le propriétaire"}), 403
+        return jsonify({"error": "Vous pouvez seulement modifier les proprietes dont vous etes le proprietaire"}), 403
     delete_room(room)
-    return jsonify({"message": "Pièce supprimée"}), 200
+    return jsonify({"message": "Piece supprimee"}), 200
