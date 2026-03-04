@@ -1,5 +1,19 @@
 from app import db
 from app.models import Property, Room
+import requests
+import os
+
+
+USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://localhost:5001")
+
+def validate_owner(owner_id):
+    """Vérifie que l'utilisateur existe dans le user-service"""
+    try:
+        response = requests.get(f"{USER_SERVICE_URL}/api/v1/users/{owner_id}")
+        return response.status_code == 200
+    except requests.exceptions.ConnectionError:
+        # Si le user-service est inaccessible, on laisse passer pour ne pas bloquer le service
+        return True
 
 
 ############# CRUD pour les biens immobiliers ################

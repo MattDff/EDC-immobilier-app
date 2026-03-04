@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.services import get_all_properties, get_property_by_id, get_properties_by_city, create_property, update_property, delete_property, get_rooms_by_property, get_room_by_id, create_room, update_room, delete_room
+from app.services import get_all_properties, get_property_by_id, get_properties_by_city, create_property, update_property, delete_property, get_rooms_by_property, get_room_by_id, create_room, update_room, delete_room, validate_owner
 from app.schemas import property_schema, properties_schema, room_schema, rooms_schema
 
 bp = Blueprint("properties", __name__)
@@ -31,6 +31,8 @@ def create_property_route():
     data = request.get_json()
     if not data or not data.get("name") or not data.get("type") or not data.get("city") or not data.get("owner_id"):
         return jsonify({"error": "name, type, city et owner_id sont obligatoires"}), 400
+    if not validate_owner(data["owner_id"]):
+        return jsonify({"error": "Propriétaire non trouvé"}), 404
     property = create_property(data)
     return jsonify(property_schema.dump(property)), 201
 
